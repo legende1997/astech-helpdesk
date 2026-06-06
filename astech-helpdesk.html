@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASTECH Bombas — Help Desk</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue: #0033CC;
+    --blue-light: #1a4fd6;
+    --blue-glow: rgba(0,51,204,0.15);
+    --dark: #0a0a0f;
+    --card: #0f1118;
+    --border: rgba(0,51,204,0.3);
+    --white: #ffffff;
+  }
+  body {
+    background: var(--dark);
+    font-family: 'Barlow', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem;
+    background-image:
+      radial-gradient(ellipse at 50% 0%, rgba(0,51,204,0.12) 0%, transparent 60%);
+  }
+  .header { text-align: center; margin-bottom: 2rem; }
+  .brand-name {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2.2rem; font-weight: 700;
+    color: var(--white); letter-spacing: 4px; text-transform: uppercase;
+    line-height: 1;
+  }
+  .brand-name span { color: var(--blue-light); }
+  .brand-sub {
+    font-size: 11px; color: rgba(255,255,255,0.3);
+    letter-spacing: 4px; text-transform: uppercase; margin-top: 6px;
+  }
+  .divider-line {
+    width: 60px; height: 3px;
+    background: var(--blue);
+    margin: 12px auto;
+    border-radius: 2px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    width: 100%; max-width: 480px;
+    box-shadow: 0 0 40px rgba(0,51,204,0.08);
+  }
+  .card-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.3rem; font-weight: 600; color: var(--white);
+    letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.25rem;
+  }
+  .card-desc { font-size: 13px; color: rgba(255,255,255,0.35); margin-bottom: 1.75rem; line-height: 1.5; }
+  .divider { height: 1px; background: var(--border); margin-bottom: 1.75rem; }
+  .field { margin-bottom: 1.25rem; }
+  label {
+    display: block; font-size: 11px; font-weight: 500;
+    color: rgba(0,100,255,0.8); text-transform: uppercase;
+    letter-spacing: 1.5px; margin-bottom: 0.5rem;
+  }
+  label span { color: #e05555; margin-left: 2px; }
+  input, select, textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(0,51,204,0.25);
+    border-radius: 8px; padding: 0.75rem 1rem;
+    font-family: 'Barlow', sans-serif;
+    font-size: 14px; color: var(--white); outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    appearance: none;
+  }
+  input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.15); }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--blue-light);
+    background: rgba(0,51,204,0.06);
+  }
+  select option { background: #0f1118; color: var(--white); }
+  .select-wrap { position: relative; }
+  .select-wrap::after {
+    content: '▾'; position: absolute; right: 1rem; top: 50%;
+    transform: translateY(-50%); color: var(--blue-light); pointer-events: none;
+  }
+  textarea { resize: none; min-height: 80px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .urgencia-box {
+    background: rgba(0,51,204,0.06);
+    border: 1px solid rgba(0,51,204,0.2);
+    border-radius: 8px; padding: 0.75rem 1rem;
+    font-size: 12px; color: rgba(255,255,255,0.4);
+    margin-bottom: 0.5rem; line-height: 1.6;
+  }
+  .urgencia-box strong { color: rgba(0,100,255,0.7); }
+  .btn {
+    width: 100%; background: var(--blue); color: var(--white);
+    border: none; border-radius: 8px; padding: 1rem;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.1rem; font-weight: 600; letter-spacing: 3px;
+    text-transform: uppercase; cursor: pointer; margin-top: 0.5rem;
+    transition: background 0.2s;
+  }
+  .btn:hover { background: var(--blue-light); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .success {
+    display: none; text-align: center; padding: 2rem;
+    color: var(--white); font-family: 'Oswald', sans-serif;
+    font-size: 1.5rem; font-weight: 600; letter-spacing: 2px;
+  }
+  .success p { font-size: 13px; color: rgba(255,255,255,0.4); margin-top: 0.5rem; font-family: 'Barlow', sans-serif; letter-spacing: 0; }
+  .footer { margin-top: 1.5rem; font-size: 11px; color: rgba(255,255,255,0.1); text-align: center; letter-spacing: 1px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="brand-name">ASTECH <span>BOMBAS</span></div>
+  <div class="divider-line"></div>
+  <div class="brand-sub">Sistema de Chamados e Agendamentos</div>
+</div>
+
+<div class="card">
+  <div id="form-wrap">
+    <div class="card-title">🔧 Abrir Chamado</div>
+    <p class="card-desc">Preencha os dados abaixo. Nossa equipa será notificada imediatamente.</p>
+    <div class="divider"></div>
+
+    <form id="form">
+
+      <div class="field">
+        <label>Nome do Local e Endereço <span>*</span></label>
+        <input type="text" name="Nome do Local e Endereço" placeholder="Ex: Empresa X — Rua das Flores, 123" required>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label>Telefone/WhatsApp <span>*</span></label>
+          <input type="tel" name="Telefone/Whatsapp" placeholder="Ex: 11 99999-9999" required>
+        </div>
+        <div class="field">
+          <label>Zona <span>*</span></label>
+          <div class="select-wrap">
+            <select name="Zona" required>
+              <option value="">Selecione...</option>
+              <option>Centro</option>
+              <option>Norte</option>
+              <option>Sul</option>
+              <option>Leste</option>
+              <option>Oeste</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Qual é o Problema? <span>*</span></label>
+        <textarea name="QUAL É O PROBLEMA?" placeholder="Descreva o que está acontecendo..." required></textarea>
+      </div>
+
+      <div class="field">
+        <label>Está afetando a operação do dia? <span>*</span></label>
+        <div class="urgencia-box">
+          <strong>Sim:</strong> equipamento parado ou funcionando muito mal<br>
+          <strong>Não:</strong> funciona ok, é manutenção ou incômodo leve
+        </div>
+        <div class="select-wrap">
+          <select name="É urgente?" required>
+            <option value="">Selecione...</option>
+            <option>Sim, parou tudo</option>
+            <option>Sim, mas parcialmente</option>
+            <option>Não, funcionando ok</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Tipo de Atendimento <span>*</span></label>
+        <div class="select-wrap">
+          <select name="Tipo de Atendimento" required>
+            <option value="">Selecione...</option>
+            <option>Presencial Imediato</option>
+            <option>Presencial Agendamento</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="submit" class="btn" id="btn">Enviar Chamado</button>
+
+    </form>
+  </div>
+
+  <div class="success" id="success">
+    ✅ Chamado enviado!
+    <p>A nossa equipa foi notificada e entrará em contacto em breve.</p>
+  </div>
+</div>
+
+<div class="footer">ASTECH BOMBAS © 2026 — Sistema de Chamados</div>
+
+<script>
+  document.getElementById('form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('btn');
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      await fetch('https://n8n-production-eda4b.up.railway.app/webhook/3f62e6a5-784a-470c-a10f-9b81c17258fb', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      document.getElementById('form-wrap').style.display = 'none';
+      document.getElementById('success').style.display = 'block';
+    } catch(err) {
+      btn.disabled = false;
+      btn.textContent = 'Enviar Chamado';
+      alert('Erro ao enviar. Tenta novamente.');
+    }
+  });
+</script>
+
+</body>
+</html>
